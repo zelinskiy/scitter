@@ -1,0 +1,9 @@
+-@ import val posts: List[com.example.app.Post]
+
+
+
+-for(post <- posts)
+  p = post.Body
+  -@ val loc: String = post.Location
+  a(href= loc) link
+  
