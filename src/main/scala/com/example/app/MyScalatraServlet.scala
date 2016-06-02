@@ -15,7 +15,7 @@ class MyScalatraServlet extends HelloWorldAppStack {
     <html>
       <body>
         <h1>eeeeeeee, world!</h1>
-				<a href="post">my servlet</a>
+		<a href="post">my servlet</a>
       </body>
     </html>
   }
