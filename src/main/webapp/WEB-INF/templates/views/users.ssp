@@ -1,0 +1,68 @@
+<html>
+
+<%@ val users: List[com.example.app.User] %>
+
+<head>
+	<meta charset="utf-8" /> 
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>	
+
+
+	<script>
+
+		function addUser(username){
+			$.post(
+				"/user/create",
+				{
+					username:username
+				})
+			.done(function(h) {
+				location.reload();
+			})
+		}
+
+		$(document).ready(function() {
+
+			$("#AddUserButton").click(function(){
+				addUser(
+					$('#UserNameInput').val()
+					);
+				}
+			);
+			
+		});
+
+	</script>
+
+</head>
+<body>
+
+	
+
+	<p>
+		<input id="UserNameInput" type="text" size="40">
+		<button id="AddUserButton" >Add User</button>
+	</p>
+
+
+
+	#for (user <- users)
+		<p><a href=${user.Location} >${user.Name}</a></p>
+		#for (post <- user.Posts)
+			<p><a href="${post.Location}">${post.Title}</a></p>
+		#end
+		<br/>
+	#end
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

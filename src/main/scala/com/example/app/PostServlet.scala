@@ -10,27 +10,17 @@ class PostServlet extends HelloWorldAppStack {
 
   val rand = scala.util.Random
 
-  val mongoClient =  MongoClient()
-  val mongoColl = mongoClient("scitterdb")("posts")
 
-  def myposts = for { post <- mongoColl }
-        yield new Post(
-          post("title").toString, 
-          post("body").toString,
-          post("id").toString
-        )
+  def myposts = Posts()
+  val mongoColl = Posts.postsColl
 
-  
-  
-  get("/utils/all") {
-    mongoColl.find()
-  }
 
   post("/insert") {
     val builder = MongoDBObject.newBuilder
+    builder += "userid" -> params("userid")
+    builder += "id" -> rand.nextInt(1000000)
     builder += "title" -> params("title")
-    builder += "body" -> params("body")
-    builder += "id" -> rand.nextInt(10000)
+    builder += "body" -> params("body")    
     mongoColl += builder.result.asDBObject
   }
 
@@ -66,14 +56,6 @@ class PostServlet extends HelloWorldAppStack {
 
 
 
-class Post(title:String, body: String, id:String){
-
-  val Id = id
-  val Title = title
-  val Body = body
-
-  val Location = "/post/"+ Id
-}
 
 
 
