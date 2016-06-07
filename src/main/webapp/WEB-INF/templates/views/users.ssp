@@ -1,6 +1,7 @@
 <html>
 
 <%@ val users: List[com.example.app.User] %>
+<%@ val me: com.example.app.User %>
 
 <head>
 	<meta charset="utf-8" /> 
@@ -9,12 +10,33 @@
 
 	<script>
 
-		function addUser(username){
+		function addUser(username, password){
 			$.post(
 				"/user/create",
 				{
-					username:username
+					username:username,
+					password:password
 				})
+			.done(function(h) {
+				location.reload();
+			})
+		}
+
+		function login(username, password){
+			$.post(
+				"/user/login",
+				{
+					username:username,
+					password:password
+				})
+			.done(function(h) {
+				location.reload();
+			})
+		}
+
+		function logout(){
+			$.post(
+				"/user/logout")
 			.done(function(h) {
 				location.reload();
 			})
@@ -24,8 +46,22 @@
 
 			$("#AddUserButton").click(function(){
 				addUser(
-					$('#UserNameInput').val()
+					$('#UserNameInput').val(),
+					$('#UserPassInput').val()
 					);
+				}
+			);
+
+			$("#LoginButton").click(function(){
+				login(
+					$('#UserNameInput').val(),
+					$('#UserPassInput').val()
+					);
+				}
+			);
+
+			$("#LogoutButton").click(function(){
+				logout();
 				}
 			);
 			
@@ -39,10 +75,14 @@
 	
 
 	<p>
-		<input id="UserNameInput" type="text" size="40">
+		<input id="UserNameInput" type="text" size="20">
+		<input id="UserPassInput" type="text" size="20">
 		<button id="AddUserButton" >Add User</button>
+		<button id="LoginButton" >Login</button>
+		<button id="LogoutButton" >Logout</button>
 	</p>
 
+	<h2>Hello, ${me.Name}</h2>
 
 
 	#for (user <- users)

@@ -1,6 +1,8 @@
 <html>
 
 <%@ val user: com.example.app.User %>
+<%@ val me: com.example.app.User %>
+
 
 <head>
 	<meta charset="utf-8" /> 
@@ -14,7 +16,7 @@
 				{
 					userid: userid,
 					title: title, 
-					body: body 
+					body: body
 				})
 			.done(function(h) {
 				location.reload();
@@ -24,6 +26,16 @@
 
 		function removePostById(id){
 			$.post("/post/remove/" + id)
+			.done(function(h) {
+				alert(h);
+				location.reload();
+			})
+		}
+
+		function retweet(postid){
+			$.post("/post/retweet", {
+				postid:postid
+			})
 			.done(function(h) {
 				alert(h);
 				location.reload();
@@ -49,19 +61,22 @@
 <body>
 
 	
+	#if(me.Id == user.Id)
+		<p>Title:</p>
+		<input id="PostTitleInput" type="text" size="40">
+		<p>Body:</p>
+		<input id="PostBodyInput" type="text" size="40">
+		<br/>
+		<button id="AddPostButton" >Add Post</button>
+	#end
 
-	<p>Title:</p>
-	<input id="PostTitleInput" type="text" size="40">
-	<p>Body:</p>
-	<input id="PostBodyInput" type="text" size="40">
-	<br/>
-	<button id="AddPostButton" >Add Post</button>
+	#for (post <- user.Posts)	
 
-	#for (post <- user.Posts)
-
+		<p>${post.Type}</p>
 		<p> 
 			<a href="${post.Location}">${post.Title}</a> | 
-			<button onclick= "removePostById(${post.Id})">Delete</button>
+			<button onclick= "removePostById(${post.Id})">Delete</button> | 
+			<button onclick= "retweet(${post.Id})">Retweet</button>
 		</p>
 
 		<p>${post.Body}</p>
